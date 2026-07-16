@@ -1,5 +1,4 @@
 import { Box, Typography, styled } from '@mui/material';
-import { useUser } from '../hooks/useUser';
 
 const Card = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'clickable'
@@ -60,14 +59,10 @@ const Caption = styled(Typography)({
 	marginBlock: '.6em 0',
 })
 
-function UserCard({ user, click = false }) {
-	const { changeUser } = useUser();
+function UserCard({ user, onClick }) {
 
 	return (
-		<Card clickable={click} onClick={() => {
-			if( !click ) return;
-			changeUser(user)
-		}}>
+		<Card clickable={Boolean(onClick)} onClick={onClick}>
 			<Thumbnail className="thumbnail">
 				<img src={user.cover} alt={`profile - ${user.name}`} />
 			</Thumbnail>

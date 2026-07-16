@@ -1,3 +1,7 @@
+import { useContext } from 'react';
+import { useNavigate, useLocation, Navigate } from 'react-router';
+import { UserContext } from '../contexts/UserContext';
+
 import cover01 from '../assets/img/user_cover/cover_01.png';
 import cover02 from '../assets/img/user_cover/cover_02.png';
 import cover03 from '../assets/img/user_cover/cover_03.png';
@@ -6,6 +10,7 @@ import cover05 from '../assets/img/user_cover/cover_05.png';
 
 import { Box, Stack, Typography } from '@mui/material';
 import { UserCard } from '../components';
+import { useUser } from '../hooks/useUser';
 
 const USERS = [
   { id: 1, name: 'User 1', cover: cover01 },
@@ -37,6 +42,21 @@ const style_stack = {
 }
 
 function UserList() {
+	const { user } = useContext(UserContext);
+	const { changeUser } = useUser();
+	const location = useLocation();
+	const navigate = useNavigate();
+	const from = location.state?.from || '/';
+	if (user) {
+    return <Navigate to={from} replace />;
+  }
+
+	const changeUserHandler = newUser => {
+		changeUser(newUser);
+		navigate(from, {replace: true})
+	}
+
+
 	return (
 		<Box sx={style_wrapper}>
 			<Box sx={{
@@ -46,7 +66,7 @@ function UserList() {
 				<Stack spacing={{xs: 1, sm: 2}} direction='row' useFlexGap sx={style_stack}>
 					{ USERS.map(user => (
 					<Box key={user.id}>
-						<UserCard user={user} click={true} />
+						<UserCard user={user} onClick={() => changeUserHandler(user)} />
 					</Box>
 					)) }
 				</Stack>

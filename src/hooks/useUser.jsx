@@ -6,9 +6,16 @@ export const useUser = () => {
 
 	const changeUser = nextUser => {
 		setUser(nextUser);
+		sessionStorage.setItem("user", JSON.stringify(nextUser));
+	}
+
+	const logOut = () => {
+		setUser(null)
+		sessionStorage.removeItem("user")
 	}
 
 	return {
-		changeUser
+		changeUser,
+		logOut
 	}
 }
