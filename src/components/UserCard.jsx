@@ -6,7 +6,7 @@ const Card = styled(Box, {
 })(({theme, clickable}) => ({
 	color: 'grey',
 	willChange: 'color',
-	width: '128',
+	width: '128px',
 	...(clickable && {
 		cursor: 'pointer',
 		transition: 'color .3s ease-in-out',
@@ -52,7 +52,7 @@ const Thumbnail = styled(Box)({
 })
 
 const Caption = styled(Typography)({
-	fontSize: '17',
+	fontSize: '17px',
 	lineHeight: '1.2',
 	textAlign: 'center',
 	textOverflow: 'ellipsis',
