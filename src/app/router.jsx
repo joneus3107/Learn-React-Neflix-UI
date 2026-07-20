@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { Homepage, UserList, NotFound } from '../pages';
 import { RequireUser } from '../components';
+import MainLayout from '../layouts/MainLayout';
 
 const router = createBrowserRouter([
   {
@@ -10,7 +11,12 @@ const router = createBrowserRouter([
   {
     Component: RequireUser,
     children: [
-      { index: true, Component: Homepage },
+      {
+        Component: MainLayout,
+        children: [
+          { index: true, Component: Homepage },
+        ]
+      }
     ],
   },
   {

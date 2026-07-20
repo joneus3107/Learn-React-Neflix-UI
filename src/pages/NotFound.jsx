@@ -107,7 +107,7 @@ const PageLogo = styled(Box)({
 function NotFound() {
 	return (
 		<Stack sx={{minHeight: '100svh'}}>
-			<PageHeader position='static' sx={{flexShrink: '0'}}>
+			<PageHeader position='static' component="header" sx={{flexShrink: '0'}}>
 				<Container maxWidth={false}>
 					<Box>
 						<PageLogo component={RouterLink} to="/">
