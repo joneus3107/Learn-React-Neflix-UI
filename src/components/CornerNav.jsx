@@ -6,7 +6,7 @@ import CustomSearchInput from "./CustomSearchInput";
 function CornerNav({sx}) {
 
 	return (
-		<Stack direction="row" spacing={2} sx={{
+		<Stack direction="row" spacing={1} sx={{
 			alignItems: 'center',
 			...sx
 		}}>
