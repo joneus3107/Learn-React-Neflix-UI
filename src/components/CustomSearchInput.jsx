@@ -26,10 +26,12 @@ function CustomSearchInput() {
 				<InputStack direction="row" sx={(theme) => ({
 					border: `1px solid ${open?alpha(theme.palette.text.primary, .3) : 'transparent'}`
 				})}>
-					<IconButton onClick={() => {setOpen(true)}} disabled={open}>
+					<IconButton onClick={() => {setOpen(true)}} disabled={open} sx={{
+						padding: {xs: '4px', md: '8px'}
+					}}>
 						<SearchIcon/>
 					</IconButton>
-					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase/></Collapse>
+					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase sx={{width: { xs: 85, sm: 130, md: 220 }}}/></Collapse>
 				</InputStack>
 			</InputField>
 		</ClickAwayListener>
