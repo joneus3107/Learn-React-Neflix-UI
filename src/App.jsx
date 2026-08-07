@@ -4,6 +4,7 @@ import router from './app/router'
 import { UserContext } from "./contexts/UserContext"
 import { CssBaseline, ThemeProvider, StyledEngineProvider } from "@mui/material"
 import netflixTheme from "./theme"
+import "./App.css"
 
 
 

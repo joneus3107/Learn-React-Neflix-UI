@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme} from '@mui/material/styles';
 
 const netflixTheme = createTheme({
   palette: {
@@ -20,6 +20,8 @@ const netflixTheme = createTheme({
     text: {
       primary: '#FFFFFF',   // Chữ chính màu trắng tinh
       secondary: '#AAAAAA', // Chữ phụ (mô tả, năm sản xuất...) màu xám nhạt
+      black: '#2a2828',
+      grey: '#808080',
     },
   },
   typography: {
