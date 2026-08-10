@@ -2,6 +2,7 @@ import { styled, Box, Typography, Stack } from '@mui/material'
 import { PlayArrow } from '@mui/icons-material'
 import CButton from './CButton'
 import {default as MovieInfo} from './CMovieInfo'
+import { BASE_IMAGE } from "../app/config"
 
 const Wrapper = styled(Box)(({theme}) => ({
 	width: 'calc(100% - 40px)',
@@ -67,17 +68,19 @@ const CoverImage = styled(Box)({
 	left: '0',
 })
 
-function MainVisual() {
+function MainVisual({data}) {
+	if(!data) return;
+
 	return (
-		<Wrapper>
-			<CoverImage component="img" src="https://static0.srcdn.com/wordpress/wp-content/uploads/2025/07/demon-slayer-infinity-castle-key-visual.jpg?w=1600&h=1200&fit=crop" alt="" />
+		<Wrapper id={data.id}>
+			<CoverImage component="img" src={`${BASE_IMAGE}w780${data.backdrop_path}`} alt="" />
 			<Inner>
-				<MovieTitle component='h2'>Thanh gươm diệt quỷ</MovieTitle>
+				<MovieTitle component='h2'>{data.title}</MovieTitle>
 				<MovieInfo>
-					<Box component='li'><Typography component='time'>0000/00/00</Typography></Box>
-					<Box component='li'><Typography>7.5 <Typography component='small'>(1000 voted)</Typography></Typography></Box>
+					<Box component='li'><Typography component='time' dateTime={data.release_date}>{data.release_date}</Typography></Box>
+					<Box component='li'><Typography>{data.vote_average.toFixed(1)} <Typography component='small'>({data.vote_count} voted)</Typography></Typography></Box>
 				</MovieInfo>
-				<Typography>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis corrupti illo nisi nemo ut totam expedita, fugiat voluptas nihil, suscipit rem at magni aperiam error consectetur! Nulla delectus quidem omnis.</Typography>
+				<Typography>{data.overview}</Typography>
 				<Stack direction='row' spacing={2} sx={{mt: 3}}>
 					<Box><CButton kind="white" startIcon={<PlayArrow/>}>Phát</CButton></Box>
 					<Box><CButton>Thông tin khác</CButton></Box>

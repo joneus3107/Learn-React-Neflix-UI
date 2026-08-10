@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { styled, alpha, Box, Typography, Popper, Stack, Grow } from "@mui/material"
+import { styled, alpha, useTheme, useMediaQuery, Box, Typography, Popper, Stack, Grow } from "@mui/material"
 import {default as MovieInfo} from './CMovieInfo'
 import iconAudio from '../assets/img/common/ico_spatialAudio.svg'
 
-const TheCard = styled(Box)(() => ({
+const TheCard = styled(Box)(({ theme }) => ({
 	width: "100%",
 	aspectRatio: "336 / 190",
 	position: "relative",
-	borderRadius: "12px",
+	borderRadius: "5px",
 	overflow: "hidden",
+	[theme.breakpoints.up('md')]: {
+		borderRadius: "12px",
+	},
 	"> img": {
 		width: "100%",
 		height: "100%",
@@ -116,12 +119,19 @@ const MovieTitle = styled(Typography)(({ theme }) => ({
 
 function CardMovie({ hightRate = false, newEp = false }) {
 	const [anchorEl, setAnchorEl] = useState(null)
+	const theme = useTheme()
+	const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+	const bindEvent = isDesktop?{
+		onMouseEnter: (event) => setAnchorEl(event.currentTarget),
+		onMouseLeave: () => setAnchorEl(null)
+	}:{
+		onClick: () => {console.log('click')}
+	}
 
 	return (
 		<Box
 			sx={{position: 'relative', zIndex: 5}}
-			onMouseEnter={(event) => setAnchorEl(event.currentTarget)}
-			onMouseLeave={() => setAnchorEl(null)}
+			{...bindEvent}
 		>
 			<TheCard>
 				{ hightRate && <HightRate/> }
@@ -129,54 +139,55 @@ function CardMovie({ hightRate = false, newEp = false }) {
 				<img src="https://vinhphucwater.com.vn/wp-content/uploads/2023/05/no-image.jpg" alt="" loading="lazy" />
 			</TheCard>
 			<Popper
-				open={Boolean(anchorEl)}
-				anchorEl={anchorEl}
-				sx={{zIndex: 5}}
-				placement='bottom'
-				modifiers={[
-					{
-						name: 'offset',
-						options: {
-							offset: ({ reference, popper }) => [
-								0,
-								-(reference.height + popper.height) / 2,
-							],
+					open={Boolean(anchorEl)}
+					anchorEl={anchorEl}
+					sx={{zIndex: 5}}
+					placement='bottom'
+					modifiers={[
+						{
+							name: 'offset',
+							options: {
+								offset: ({ reference, popper }) => [
+									0,
+									-(reference.height + popper.height) / 2,
+								],
+							},
 						},
-					},
-				]}
-				transition
-			>
-				{({ TransitionProps }) => (
-					<Grow {...TransitionProps} timeout={{enter: 800, exit: 400}}>
-						<TheBox>
-							<CoverWrapper>
-								<img src="https://vinhphucwater.com.vn/wp-content/uploads/2023/05/no-image.jpg" alt="" />
-							</CoverWrapper>
-							<InfoWrapper>
-								<MovieTitle component="h2">Movie name</MovieTitle>
-								<Stack direction="row" spacing={1} useFlexGap sx={{
-									listStyle: 'none',
+					]}
+					transition
+				>
+					{({ TransitionProps }) => (
+						<Grow {...TransitionProps} timeout={{enter: 800, exit: 400}}>
+							<TheBox>
+								<CoverWrapper>
+									<img src="https://vinhphucwater.com.vn/wp-content/uploads/2023/05/no-image.jpg" alt="" />
+								</CoverWrapper>
+								<InfoWrapper>
+									<MovieTitle component="h2">Movie name</MovieTitle>
+									<Stack direction="row" spacing={1} useFlexGap sx={{
+										listStyle: 'none',
 
-								}}>
-									<Box component="li">
-										<Box
-											component="img"
-											src={iconAudio}
-											alt="Spatial audio"
-											width="100"
-										/>
-									</Box>
-								</Stack>
-								<MovieInfo>
-									<Box component='li'><Typography component='time'>0000/00/00</Typography></Box>
-									<Box component='li'><Typography>7.5 <Typography component='small'>(1000 voted)</Typography></Typography></Box>
-								</MovieInfo>
-							</InfoWrapper>
-						</TheBox>
-					</Grow>
-				)}
-				
-			</Popper>
+									}}>
+										<Box component="li">
+											<Box
+												component="img"
+												src={iconAudio}
+												alt="Spatial audio"
+												width="100"
+											/>
+										</Box>
+									</Stack>
+									<MovieInfo>
+										<Box component='li'><Typography component='time'>0000/00/00</Typography></Box>
+										<Box component='li'><Typography>7.5 <Typography component='small'>(1000 voted)</Typography></Typography></Box>
+									</MovieInfo>
+								</InfoWrapper>
+							</TheBox>
+						</Grow>
+					)}
+					
+				</Popper>
+			
 		</Box>
 	)
 }

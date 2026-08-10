@@ -1,5 +1,5 @@
 import CardMovie from "./CardMovie"
-import { Navigation, Pagination } from "swiper/modules"
+import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -10,21 +10,22 @@ function SliderMovie() {
 
 	return (
 		<Swiper
-		modules={ [Navigation, Pagination] }
+		modules={ [Navigation, Pagination, Autoplay] }
 			slidesPerView={2.3}
-			spaceBetween={20}
+			spaceBetween={5}
 			loop={true}
 			breakpoints={{
 				600: {
 					slidesPerView: 3.5,
-					spaceBetween: 35,
+					spaceBetween: 15,
 				},
 				900: {
 					slidesPerView: 4.3,
-					spaceBetween: 40,
+					spaceBetween: 25,
 				},
 				1200: {
 					slidesPerView: 6,
+					spaceBetween: 25,
 				}
 			}}
 			autoplay={{
