@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-function SliderMovie() {
+function SliderMovie({ data }) {
 
 	return (
 		<Swiper
@@ -30,26 +30,14 @@ function SliderMovie() {
 			}}
 			autoplay={{
 				delay: 5000,
+				pauseOnMouseEnter: true,
+				disableOnInteraction: false,
 			}}
 			navigation
       pagination={{ clickable: true }}
 			className="sliderMovie"
 		>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
-			<SwiperSlide><CardMovie/></SwiperSlide>
+			{ data.map(i => <SwiperSlide key={data.id}><CardMovie data={i} /></SwiperSlide>) }
 		</Swiper>
 	)
 }

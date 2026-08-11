@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { styled, alpha, useTheme, useMediaQuery, Box, Typography, Popper, Stack, Grow } from "@mui/material"
 import {default as MovieInfo} from './CMovieInfo'
 import iconAudio from '../assets/img/common/ico_spatialAudio.svg'
+import { BASE_IMAGE } from "../app/config"
 
 const TheCard = styled(Box)(({ theme }) => ({
 	width: "100%",
-	aspectRatio: "336 / 190",
+	aspectRatio: "500 / 750",
 	position: "relative",
 	borderRadius: "5px",
 	overflow: "hidden",
@@ -33,17 +34,17 @@ const HightRate = styled(Box)(({ theme }) => ({
 		fontSize: "12px",
 	},
 	"&::before": {
-		content: "'TOP'",
+		content: "'HIGH'",
 		display: "block",
 	},
 	"&::after": {
-		content: "'10'",
+		content: "'RATED'",
 		display: "block",
 		fontSize: "130%",
 	}
 }))
 
-const NewEpisode = styled(Box)(({ theme }) => ({
+const UpComing = styled(Box)(({ theme }) => ({
 	borderTopLeftRadius: "5px",
 	borderTopRightRadius: "5px",
 	overflow: "hidden",
@@ -117,7 +118,7 @@ const MovieTitle = styled(Typography)(({ theme }) => ({
 	}
 }))
 
-function CardMovie({ hightRate = false, newEp = false }) {
+function CardMovie({data}) {
 	const [anchorEl, setAnchorEl] = useState(null)
 	const theme = useTheme()
 	const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -127,6 +128,8 @@ function CardMovie({ hightRate = false, newEp = false }) {
 	}:{
 		onClick: () => {console.log('click')}
 	}
+	const today = new Date().toISOString().slice(0, 10);
+	const isUpcoming = data.release_date && data.release_date > today;
 
 	return (
 		<Box
@@ -134,9 +137,9 @@ function CardMovie({ hightRate = false, newEp = false }) {
 			{...bindEvent}
 		>
 			<TheCard>
-				{ hightRate && <HightRate/> }
-				{ newEp && <NewEpisode/> }
-				<img src="https://vinhphucwater.com.vn/wp-content/uploads/2023/05/no-image.jpg" alt="" loading="lazy" />
+				{ (data.vote_average.toFixed(1) >= 8.5) && <HightRate/> }
+				{ isUpcoming && <UpComing/> }
+				<img src={`${BASE_IMAGE}w500${data.poster_path}`} alt="" loading="lazy" />
 			</TheCard>
 			<Popper
 					open={Boolean(anchorEl)}
@@ -160,10 +163,10 @@ function CardMovie({ hightRate = false, newEp = false }) {
 						<Grow {...TransitionProps} timeout={{enter: 800, exit: 400}}>
 							<TheBox>
 								<CoverWrapper>
-									<img src="https://vinhphucwater.com.vn/wp-content/uploads/2023/05/no-image.jpg" alt="" />
+									<img src={`${BASE_IMAGE}w780${data.backdrop_path}`} alt="" />
 								</CoverWrapper>
 								<InfoWrapper>
-									<MovieTitle component="h2">Movie name</MovieTitle>
+									<MovieTitle component="h2">{data.title}</MovieTitle>
 									<Stack direction="row" spacing={1} useFlexGap sx={{
 										listStyle: 'none',
 
@@ -178,8 +181,8 @@ function CardMovie({ hightRate = false, newEp = false }) {
 										</Box>
 									</Stack>
 									<MovieInfo>
-										<Box component='li'><Typography component='time'>0000/00/00</Typography></Box>
-										<Box component='li'><Typography>7.5 <Typography component='small'>(1000 voted)</Typography></Typography></Box>
+										<Box component='li'><Typography component='time' dateTime={data.release_date}>{data.release_date}</Typography></Box>
+										<Box component='li'><Typography>{data.vote_average.toFixed(1)} <Typography component='small'>({data.vote_count} voted)</Typography></Typography></Box>
 									</MovieInfo>
 								</InfoWrapper>
 							</TheBox>

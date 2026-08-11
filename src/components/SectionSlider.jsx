@@ -16,7 +16,7 @@ function SectionSlider({title, data}) {
 			<Container maxWidth={false} sx={{paddingInline: {xs: "20px", md: "60px"}}}>
 				<SectionTitle component="h2">{title}</SectionTitle>
 			</Container>
-			<SliderMovie/>
+			<SliderMovie data={data}/>
 		</Box>
 	)
 }
