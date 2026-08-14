@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
-import { UserContext } from '../contexts/UserContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 function RequireUser() {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(ThemeContext);
   const location = useLocation();
 
   if (!user) {

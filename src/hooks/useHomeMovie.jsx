@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL, ACCESS_TOKEN } from "../app/config"
-import axios from "axios"
-
-const movieApi = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${ACCESS_TOKEN}`,
-  },
-});
+import { MOVIE_AXIOS } from "../app/config"
 
 export const useHomeMovie = () => {
 	const [data, setData] = useState({
@@ -23,14 +14,16 @@ export const useHomeMovie = () => {
 	const params = 'language=vi';
 
 	useEffect(()=>{
+		const controller = new AbortController();
+
 		const getMovieData = async () => {
 			try {
 				const [nowPlayingRes, popularRes, topRatedRes, upcomingRes] =
         await Promise.all([
-          movieApi.get(`/movie/now_playing?${params}`),
-          movieApi.get(`/movie/popular?${params}`),
-          movieApi.get(`/movie/top_rated?${params}`),
-          movieApi.get(`/movie/upcoming?${params}`),
+          MOVIE_AXIOS.get(`/movie/now_playing?${params}`, { signal: controller.signal }),
+          MOVIE_AXIOS.get(`/movie/popular?${params}`, { signal: controller.signal }),
+          MOVIE_AXIOS.get(`/movie/top_rated?${params}`, { signal: controller.signal }),
+          MOVIE_AXIOS.get(`/movie/upcoming?${params}`, { signal: controller.signal }),
         ]);
 
 				setData({
@@ -40,13 +33,19 @@ export const useHomeMovie = () => {
 					upcoming: upcomingRes.data.results,
 				});
 			} catch(err) {
-				setError(err)
+				if (err.name !== "CanceledError") {
+					setError(err)
+				}
 			} finally {
-				setLoading(false)
+				if (!controller.signal.aborted) {
+					setLoading(false)
+				}
 			}
 		}
 
 		getMovieData()
+
+		return () => controller.abort();
 	}, [])
 
 	return {data, error, loading}

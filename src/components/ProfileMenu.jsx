@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { UserContext } from '../contexts/UserContext'
+import { ThemeContext } from '../contexts/ThemeContext'
 import { styled, ClickAwayListener, alpha, Box, Button, Avatar } from '@mui/material';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { Help, PermIdentity, SwitchAccount, Edit } from '@mui/icons-material';
@@ -49,7 +49,7 @@ const ModalItem = styled(Button)(({theme}) => ({
 
 function ProfileMenu() {
 	const [ isOpen, setIsOpen ] = useState(false);
-	const { user } = useContext(UserContext);
+	const { user } = useContext(ThemeContext);
 	const { logOut, changeUser } = useUser();
 	
 

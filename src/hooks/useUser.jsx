@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 export const useUser = () => {
-	const { setUser } = useContext(UserContext);
+	const { setUser } = useContext(ThemeContext);
 
 	const changeUser = nextUser => {
 		setUser(nextUser);

@@ -1,13 +1,14 @@
 import { styled, alpha, ClickAwayListener, Box, IconButton, InputBase, Stack, Collapse } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react'
+import { ThemeContext } from '../contexts/ThemeContext';
+import { useState, useContext } from 'react'
 
 const InputField = styled(Box)({
 	display: 'flex',
 	justifyContent: 'flex-end',
 })
 
-const InputStack = styled(Stack)(({ theme }) => ({
+const InputStack = styled(Stack)(() => ({
 	alignItems: 'center',
 	maxWidth: '300px',
 	boxSizing: 'border-box',
@@ -18,6 +19,7 @@ const InputStack = styled(Stack)(({ theme }) => ({
 }))
 
 function CustomSearchInput() {
+	const { searchParam, setSearchParam } = useContext(ThemeContext)
 	const [open, setOpen] = useState(false)
 
 	return (
@@ -31,7 +33,7 @@ function CustomSearchInput() {
 					}}>
 						<SearchIcon/>
 					</IconButton>
-					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase sx={{width: { xs: 85, sm: 130, md: 220 }}}/></Collapse>
+					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase sx={{width: { xs: 85, sm: 130, md: 220 }}} value={searchParam} onChange={e => setSearchParam(e.target.value)} /></Collapse>
 				</InputStack>
 			</InputField>
 		</ClickAwayListener>

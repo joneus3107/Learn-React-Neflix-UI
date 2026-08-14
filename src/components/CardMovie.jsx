@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { styled, alpha, useTheme, useMediaQuery, Box, Typography, Popper, Stack, Grow } from "@mui/material"
 import {default as MovieInfo} from './CMovieInfo'
 import iconAudio from '../assets/img/common/ico_spatialAudio.svg'
 import { BASE_IMAGE } from "../app/config"
+import defaultPoster from "../assets/img/common/default_poster.png"
+import defaultBackdrop from "../assets/img/common/default_backdrop.png"
 
 const TheCard = styled(Box)(({ theme }) => ({
 	width: "100%",
@@ -63,12 +65,12 @@ const UpComing = styled(Box)(({ theme }) => ({
 		flexShrink: "0"
 	},
 	"&::before": {
-		content: "'Tập mới'",
+		content: "'Coming'",
 		backgroundColor: theme.palette.primary.main,
 		color: theme.palette.text.primary,
 	},
 	"&::after": {
-		content: "'Xem ngay'",
+		content: "'Soon'",
 		backgroundColor: theme.palette.secondary.main,
 		color: theme.palette.text.black,
 		display: "none",
@@ -120,11 +122,31 @@ const MovieTitle = styled(Typography)(({ theme }) => ({
 
 function CardMovie({data}) {
 	const [anchorEl, setAnchorEl] = useState(null)
+	const hoverTimerRef = useRef(null)
 	const theme = useTheme()
 	const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+	useEffect(() => {
+		return () => clearTimeout(hoverTimerRef.current)
+	}, [])
+
+	const handleMouseEnter = (event) => {
+		clearTimeout(hoverTimerRef.current)
+		const cardElement = event.currentTarget
+
+		hoverTimerRef.current = setTimeout(() => {
+			setAnchorEl(cardElement)
+		}, 500)
+	}
+
+	const handleMouseLeave = () => {
+		clearTimeout(hoverTimerRef.current)
+		setAnchorEl(null)
+	}
+
 	const bindEvent = isDesktop?{
-		onMouseEnter: (event) => setAnchorEl(event.currentTarget),
-		onMouseLeave: () => setAnchorEl(null)
+		onMouseEnter: handleMouseEnter,
+		onMouseLeave: handleMouseLeave,
 	}:{
 		onClick: () => {console.log('click')}
 	}
@@ -137,9 +159,12 @@ function CardMovie({data}) {
 			{...bindEvent}
 		>
 			<TheCard>
-				{ (data.vote_average.toFixed(1) >= 8.5) && <HightRate/> }
+				{typeof data.vote_average === "number" &&
+					data.vote_average >= 8.5 &&
+					<HightRate />
+				}
 				{ isUpcoming && <UpComing/> }
-				<img src={`${BASE_IMAGE}w500${data.poster_path}`} alt="" loading="lazy" />
+				<img src={data.poster_path?`${BASE_IMAGE}w500${data.poster_path}`:defaultPoster} alt={`poster_${data.id}`} loading="lazy" />
 			</TheCard>
 			<Popper
 					open={Boolean(anchorEl)}
@@ -163,7 +188,7 @@ function CardMovie({data}) {
 						<Grow {...TransitionProps} timeout={{enter: 800, exit: 400}}>
 							<TheBox>
 								<CoverWrapper>
-									<img src={`${BASE_IMAGE}w780${data.backdrop_path}`} alt="" />
+									<img src={data.backdrop_path?`${BASE_IMAGE}w780${data.backdrop_path}`:defaultBackdrop} alt={`backdrop_${data.id}`} />
 								</CoverWrapper>
 								<InfoWrapper>
 									<MovieTitle component="h2">{data.title}</MovieTitle>
@@ -182,7 +207,9 @@ function CardMovie({data}) {
 									</Stack>
 									<MovieInfo>
 										<Box component='li'><Typography component='time' dateTime={data.release_date}>{data.release_date}</Typography></Box>
+										{data.vote_average && (
 										<Box component='li'><Typography>{data.vote_average.toFixed(1)} <Typography component='small'>({data.vote_count} voted)</Typography></Typography></Box>
+										)}
 									</MovieInfo>
 								</InfoWrapper>
 							</TheBox>

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate, useLocation, Navigate } from 'react-router';
-import { UserContext } from '../contexts/UserContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 import { USERS } from '../data/user';
 import { Box, Stack, Typography } from '@mui/material';
@@ -29,7 +29,7 @@ const style_stack = {
 }
 
 function UserList() {
-	const { user } = useContext(UserContext);
+	const { user } = useContext(ThemeContext);
 	const { changeUser } = useUser();
 	const location = useLocation();
 	const navigate = useNavigate();

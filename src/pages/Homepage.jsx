@@ -1,11 +1,10 @@
 // import React from 'react'
-import { CircularProgress } from '@mui/material'
-import { MainVisual, SectionSlider } from '../components'
+import { MainVisual, SectionSlider, LoadingScreen } from '../components'
 import {useHomeMovie} from '../hooks/useHomeMovie'
 
 function Homepage() {
 	const { data, error, loading } = useHomeMovie();
-	if(loading) return <CircularProgress/>
+	if(loading) return <LoadingScreen/>
 	if (error) return <p>Could not load movies.</p>;
 
 	const nowPlaying = data.nowPlaying.slice(0, 10);
