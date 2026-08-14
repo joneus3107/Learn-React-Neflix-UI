@@ -2,6 +2,7 @@ import { styled, alpha, ClickAwayListener, Box, IconButton, InputBase, Stack, Co
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useState, useContext } from 'react'
+import { useNavigate, useLocation } from 'react-router';
 
 const InputField = styled(Box)({
 	display: 'flex',
@@ -18,9 +19,18 @@ const InputStack = styled(Stack)(() => ({
 	transition: '.3s border',
 }))
 
-function CustomSearchInput() {
+function CustomSearchInput({ redirect = false }) {
 	const { searchParam, setSearchParam } = useContext(ThemeContext)
 	const [open, setOpen] = useState(false)
+	const navigate = useNavigate()
+	const location = useLocation()
+
+	const handleChange = inputVal => {
+		setSearchParam(inputVal)
+		if(redirect && location.pathname !== '/search') {
+			navigate('/search')
+		}
+	}
 
 	return (
 		<ClickAwayListener onClickAway={() => {setOpen(false)}}>
@@ -33,7 +43,7 @@ function CustomSearchInput() {
 					}}>
 						<SearchIcon/>
 					</IconButton>
-					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase sx={{width: { xs: 85, sm: 130, md: 220 }}} value={searchParam} onChange={e => setSearchParam(e.target.value)} /></Collapse>
+					<Collapse in={open} orientation="horizontal" timeout={500}><InputBase sx={{width: { xs: 85, sm: 130, md: 220 }}} value={searchParam} onChange={e => handleChange(e.target.value)} /></Collapse>
 				</InputStack>
 			</InputField>
 		</ClickAwayListener>

@@ -10,7 +10,7 @@ function CornerNav({sx}) {
 			alignItems: 'center',
 			...sx
 		}}>
-			<Box sx={{flex: '1'}}><CustomSearchInput/></Box>
+			<Box sx={{flex: '1'}}><CustomSearchInput redirect={true}/></Box>
 			<Box><NoticeMenu/></Box>
 			<Box><ProfileMenu/></Box>
 		</Stack>

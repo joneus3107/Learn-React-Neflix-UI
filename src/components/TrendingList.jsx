@@ -9,7 +9,7 @@ const List = styled(Box)(() => ({
 	letterSpacing: '.05em',
 	fontWeight: '500',
 	'> :not(:first-child)': {
-		marginTop: '10px',
+		marginTop: '15px',
 	}
 }))
 
@@ -34,7 +34,7 @@ function TrendingList({data, loading, error}) {
 	const { setSearchParam } = useContext(ThemeContext);
 
 	if(loading) return<LoadingScreen/>
-	if (!data) return <Alert severity="error">{error}</Alert>
+	if (!data) return <Alert severity="error">{error.response?.data?.status_message || error.message}</Alert>
 
 	return (
 		<List component='ul'>
